@@ -16,7 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@graphql/*": ["graphql/*"], 
+      "@graphql/*": ["graphql/*"],  
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

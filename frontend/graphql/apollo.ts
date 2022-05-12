@@ -1,7 +1,14 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Operation, split } from "@apollo/client";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { createClient } from "graphql-ws";
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  Operation,
+  split,
+} from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { createClient } from 'graphql-ws';
 
 /**
  * Evaluates whether the graphql operation is a subscription or not.
@@ -11,7 +18,10 @@ import { createClient } from "graphql-ws";
  */
 const isSubscription = (operation: Operation): boolean => {
   const definition = getMainDefinition(operation.query);
-  return definition.kind === "OperationDefinition" && definition.operation === "subscription";
+  return (
+    definition.kind === 'OperationDefinition' &&
+    definition.operation === 'subscription'
+  );
 };
 
 type ClientProps = { httpURL: string; wsURL?: string };
@@ -27,7 +37,7 @@ type ClientProps = { httpURL: string; wsURL?: string };
  * @returns an instance of ApolloClient
  */
 const createApolloClient = ({ httpURL, wsURL }: ClientProps) => {
-  const isSSR = typeof window === "undefined";
+  const isSSR = typeof window === 'undefined';
   const httpLink = new HttpLink({ uri: httpURL });
 
   let smartLink: ApolloLink | undefined;
