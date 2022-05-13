@@ -1,3 +1,42 @@
 table:
   schema: public
   name: tasks
+insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+        - id
+        - description
+        - name
+        - status
+        - created_at
+        - updated_at
+      backend_only: false
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - description
+        - name
+        - status
+        - created_at
+        - updated_at
+      filter: {}
+update_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - description
+        - name
+        - status
+        - created_at
+        - updated_at
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: anonymous
+    permission:
+      filter: {}
