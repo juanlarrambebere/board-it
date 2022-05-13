@@ -21,7 +21,7 @@ const subscriptionEffect: (taskId: number) => AtomEffect<Task | undefined> =
         .subscribe(
           (result) => {
             if (result.data?.task) {
-              const { id, name, description, updated_at, created_at } =
+              const { id, name, status, description, updated_at, created_at } =
                 result.data.task;
 
               setSelf({

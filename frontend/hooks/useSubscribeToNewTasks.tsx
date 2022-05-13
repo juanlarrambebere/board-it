@@ -23,7 +23,6 @@ const useSubscribeToNewTasks = () => {
   });
 
   useEffect(() => {
-    console.log({ data, loading, error });
     if (data?.tasks && data.tasks.length > 0) {
       const newTaskIds = data.tasks.map((task) => task.id);
 
