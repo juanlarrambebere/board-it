@@ -24,7 +24,11 @@ const isSubscription = (operation: Operation): boolean => {
   );
 };
 
-type ClientProps = { httpURL: string; wsURL?: string };
+type ClientProps = {
+  httpURL: string;
+  wsURL?: string;
+  headers?: Record<string, string>;
+};
 
 /**
  * Creates an ApolloClient instance that connects to the backend graphql endpoint.
@@ -36,16 +40,28 @@ type ClientProps = { httpURL: string; wsURL?: string };
  * @param props the client props
  * @returns an instance of ApolloClient
  */
-const createApolloClient = ({ httpURL, wsURL }: ClientProps) => {
+const createApolloClient = ({ httpURL, wsURL, headers }: ClientProps) => {
   const isSSR = typeof window === 'undefined';
-  const httpLink = new HttpLink({ uri: httpURL });
+  const httpLink = new HttpLink({
+    uri: httpURL,
+    headers,
+    credentials: 'include',
+  });
 
   let smartLink: ApolloLink | undefined;
 
   if (isSSR || !wsURL) {
     smartLink = httpLink;
   } else {
-    const wsLink = new GraphQLWsLink(createClient({ url: wsURL }));
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: wsURL,
+        connectionParams: {
+          reconnect: true,
+          headers,
+        },
+      })
+    );
     smartLink = split(isSubscription, wsLink, httpLink);
   }
 
@@ -59,4 +75,5 @@ const createApolloClient = ({ httpURL, wsURL }: ClientProps) => {
 export const backendCLient = createApolloClient({
   httpURL: process.env.NEXT_PUBLIC_BOARD_IT_BACKEND_GRAPHQL_HTTP_URL!,
   wsURL: process.env.NEXT_PUBLIC_BOARD_IT_BACKEND_GRAPHQL_WS_URL!,
+  headers: {},
 });
