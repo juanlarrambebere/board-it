@@ -10,7 +10,7 @@ const TaskCard: FC<Props> = ({ taskId }: Props) => {
   const task = useRecoilValue(taskAtomFamily(taskId));
 
   return task ? (
-    <div className="flex flex-col p-2 rounded-lg bg-neutral-800 w-60">
+    <div className="flex flex-col p-2 break-words rounded-lg bg-neutral-800 w-60">
       <span>{task.name}</span>
       <span className="text-sm text-neutral-500">{task.id}</span>
     </div>

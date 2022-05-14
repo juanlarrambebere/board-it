@@ -3,15 +3,13 @@ import { Raw } from 'types';
 import { Status } from 'types/status';
 
 export interface CreateTaskData {
-  data: {
-    task: Raw.Task;
-  };
+  task: Raw.Task;
 }
 
 export interface CreateTaskVariables {
   name: string;
   status: Status;
-  description: string;
+  description?: string;
 }
 
 export const CREATE_TASK = gql`
