@@ -14,6 +14,11 @@ export const UPDATE_TASK = gql`
   mutation UpdateTask($taskId: Int!, $changes: tasks_set_input!) {
     task: update_tasks_by_pk(pk_columns: { id: $taskId }, _set: $changes) {
       id
+      created_at
+      description
+      name
+      status
+      updated_at
     }
   }
 `;
