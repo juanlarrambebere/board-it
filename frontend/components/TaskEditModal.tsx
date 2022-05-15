@@ -1,3 +1,4 @@
+import EditIcon from 'assets/icons/edit.svg';
 import classNames from 'classnames';
 import { format } from 'date-fns';
 import useForm from 'hooks/useForm';
@@ -6,6 +7,7 @@ import { FC, useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import taskAtomFamily from 'recoil/atoms/taskAtomFamily';
 import Modal from './Modal';
+import TaskContextMenu from './TaskContextMenu';
 
 type Props = {
   taskId: number;
@@ -62,10 +64,11 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
             onChange={handleChange}
             rows={2}
             className={classNames(
-              'bg-transparent cursor-auto resize-none focus:outline-none w-full',
+              'bg-transparent cursor-auto resize-none focus:outline-none flex-1',
               { 'hover:bg-neutral-700/50 rounded-lg': isEditMode }
             )}
           />
+          <TaskContextMenu taskId={taskId} />
         </div>
 
         <div className="flex items-center p-4 space-x-4 rounded-lg bg-neutral-700/50">
@@ -102,7 +105,7 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
                 </button>
                 <button
                   onClick={handleSaveClick}
-                  className="p-2 rounded-lg hover:bg-neutral-300/10"
+                  className="p-2 rounded-lg text-fuchsia-500 hover:bg-fuchsia-200"
                 >
                   Save
                 </button>
@@ -110,8 +113,9 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
             ) : (
               <button
                 onClick={handleEditClick}
-                className="p-2 rounded-lg hover:bg-neutral-300/10"
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-neutral-300/10"
               >
+                <EditIcon className="w-4 h-4 " />
                 Edit
               </button>
             )}
