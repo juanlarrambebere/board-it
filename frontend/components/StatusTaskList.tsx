@@ -91,7 +91,7 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
   return (
     <div
       className={classNames(
-        'flex flex-col p-2 space-y-2 rounded-lg h-fit w-64 group',
+        'flex flex-col p-2 space-y-2 rounded-lg h-fit w-64 group shadow-lg',
         rootClassName,
         {
           [onDragClassName]: isOver && canDrop,

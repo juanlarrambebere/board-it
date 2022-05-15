@@ -1,3 +1,4 @@
+import FilterIcon from 'assets/icons/filter.svg';
 import useDebounce from 'hooks/useDebounce';
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
@@ -30,8 +31,14 @@ const TasksFilter: FC = () => {
   );
 
   return (
-    <div className="flex w-full">
-      <input value={text} onChange={handleChange}></input>
+    <div className="flex items-center w-full gap-2 p-2 rounded-lg shadow-lg bg-neutral-500/10">
+      <FilterIcon className="w-4 h-4" />
+      <input
+        value={text}
+        onChange={handleChange}
+        placeholder="Your filter here! (by name, status or description)"
+        className="flex-1 bg-transparent focus:outline-none"
+      />
     </div>
   );
 };
