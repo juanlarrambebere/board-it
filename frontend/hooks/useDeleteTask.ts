@@ -17,7 +17,7 @@ const useCreateTask = () => {
 
         if (!data || errors) {
           // TODO log the error somewhere (ie: Sentry)
-          throw 'Error creating task';
+          throw 'Error deleting task';
         }
 
         // Since the mutation worked, its safe to update the state without waiting for the subscription.

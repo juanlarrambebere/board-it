@@ -30,7 +30,7 @@ const useUpdateTask = () => {
 
         if (!data || errors) {
           // TODO log the error somewhere (ie: Sentry)
-          throw 'Error creating task';
+          throw 'Error updating task';
         }
 
         // Since the mutation worked, its safe to update the state without waiting for the subscription.
