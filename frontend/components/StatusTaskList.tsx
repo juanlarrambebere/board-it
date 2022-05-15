@@ -1,31 +1,37 @@
 import classNames from 'classnames';
+import useUpdateTask from 'hooks/useUpdateTask';
 import { FC, useCallback, useState } from 'react';
+import { useDrop } from 'react-dnd';
 import { useRecoilValue } from 'recoil';
 import taskIdsWithStatusSelectorFamily from 'recoil/selectors/taskIdsWithStatusSelectorFamily';
 import { Status } from 'types/status';
 import { STATUS_CONFIG } from 'utils/constants';
 import NewTaskInput from './NewTaskInput';
 import StatusTaskListHeader from './StatusTaskListHeader';
-import TaskCard from './TaskCard';
+import TaskCard, { TASK_CARD } from './TaskCard';
 
 const COLOR_CLASSNAMES_MAPPING = {
   neutral: {
     rootClassName: 'bg-neutral-500/10',
+    onDragClassName: 'bg-neutral-500',
     titleClassName: 'bg-neutral-500/25 text-neutral-300',
     buttonClassName: 'hover:bg-neutral-300/10',
   },
   orange: {
     rootClassName: 'bg-orange-500/10',
+    onDragClassName: 'bg-orange-500',
     titleClassName: 'bg-orange-500/25 text-orange-300',
     buttonClassName: 'hover:bg-orange-300/10',
   },
   purple: {
     rootClassName: 'bg-purple-500/10',
+    onDragClassName: 'bg-purple-500',
     titleClassName: 'bg-purple-500/25 text-purple-300',
     buttonClassName: 'hover:bg-purple-300/10',
   },
   green: {
     rootClassName: 'bg-green-500/10',
+    onDragClassName: 'bg-green-500',
     titleClassName: 'bg-green-500/25 text-green-300',
     buttonClassName: 'hover:bg-green-300/10',
   },
@@ -57,15 +63,41 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
   }, []);
 
   const { name, color } = STATUS_CONFIG[status];
-  const { rootClassName, titleClassName, buttonClassName } =
+  const { rootClassName, onDragClassName, titleClassName, buttonClassName } =
     COLOR_CLASSNAMES_MAPPING[color];
+
+  const updateTask = useUpdateTask();
+
+  const handleDrop = useCallback(
+    async ({ taskId }: { taskId: number }) => {
+      try {
+        updateTask(taskId, { status });
+      } catch (_e) {
+        // TODO give some feedback to the user.
+      }
+    },
+    [status, updateTask]
+  );
+
+  const [{ isOver, canDrop }, drop] = useDrop({
+    accept: TASK_CARD,
+    drop: handleDrop,
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
 
   return (
     <div
       className={classNames(
         'flex flex-col p-2 space-y-2 rounded-lg h-fit w-64 group',
-        rootClassName
+        rootClassName,
+        {
+          [onDragClassName]: isOver && canDrop,
+        }
       )}
+      ref={drop}
     >
       <StatusTaskListHeader
         title={name}
