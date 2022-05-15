@@ -3,71 +3,31 @@ import { FC, useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import taskIdsWithStatusSelectorFamily from 'recoil/selectors/taskIdsWithStatusSelectorFamily';
 import { Status } from 'types/status';
+import { STATUS_CONFIG } from 'utils/constants';
 import NewTaskInput from './NewTaskInput';
 import StatusTaskListHeader from './StatusTaskListHeader';
 import TaskCard from './TaskCard';
 
-type StatusConfig = {
-  root: {
-    className: string;
-  };
-  title: {
-    text: string;
-    className: string;
-  };
-  newTaskButton: {
-    className: string;
-  };
-};
-
-const STATUS_CONFIG: { [key in Status]: StatusConfig } = {
-  TODO: {
-    root: {
-      className: 'bg-neutral-500/10',
-    },
-    title: {
-      text: 'Todo',
-      className: 'rounded-md p-1 bg-neutral-500/25 text-neutral-300',
-    },
-    newTaskButton: {
-      className: 'hover:bg-neutral-300/10',
-    },
+const COLOR_CLASSNAMES_MAPPING = {
+  neutral: {
+    rootClassName: 'bg-neutral-500/10',
+    titleClassName: 'bg-neutral-500/25 text-neutral-300',
+    buttonClassName: 'hover:bg-neutral-300/10',
   },
-  DOING: {
-    root: {
-      className: 'bg-orange-500/10',
-    },
-    title: {
-      text: 'Doing',
-      className: 'rounded-md p-1 bg-orange-500/25 text-orange-300',
-    },
-    newTaskButton: {
-      className: 'hover:bg-orange-300/10',
-    },
+  orange: {
+    rootClassName: 'bg-orange-500/10',
+    titleClassName: 'bg-orange-500/25 text-orange-300',
+    buttonClassName: 'hover:bg-orange-300/10',
   },
-  IN_REVIEW: {
-    root: {
-      className: 'bg-purple-500/10',
-    },
-    title: {
-      text: 'In review',
-      className: 'rounded-md p-1 bg-purple-500/25 text-purple-300',
-    },
-    newTaskButton: {
-      className: 'hover:bg-purple-300/10',
-    },
+  purple: {
+    rootClassName: 'bg-purple-500/10',
+    titleClassName: 'bg-purple-500/25 text-purple-300',
+    buttonClassName: 'hover:bg-purple-300/10',
   },
-  DONE: {
-    root: {
-      className: 'bg-green-500/10',
-    },
-    title: {
-      text: 'Done',
-      className: 'rounded-md p-1 bg-green-500/25 text-green-300',
-    },
-    newTaskButton: {
-      className: 'hover:bg-green-300/10',
-    },
+  green: {
+    rootClassName: 'bg-green-500/10',
+    titleClassName: 'bg-green-500/25 text-green-300',
+    buttonClassName: 'hover:bg-green-300/10',
   },
 };
 
@@ -96,18 +56,20 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
     // TODO give some feedback to the user.
   }, []);
 
-  const { root, title, newTaskButton } = STATUS_CONFIG[status];
+  const { name, color } = STATUS_CONFIG[status];
+  const { rootClassName, titleClassName, buttonClassName } =
+    COLOR_CLASSNAMES_MAPPING[color];
 
   return (
     <div
       className={classNames(
         'flex flex-col p-2 space-y-2 rounded-lg h-fit w-fit group',
-        root.className
+        rootClassName
       )}
     >
       <StatusTaskListHeader
-        title={title.text}
-        className={title.className}
+        title={name}
+        className={classNames('rounded-md p-1', titleClassName)}
         tasksCount={taskIdsWithStatus?.length ?? 0}
       />
       {taskIdsWithStatus?.map((taskId) => (
@@ -125,7 +87,7 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
       <button
         className={classNames(
           'w-fit text-sm hidden group-hover:block p-1 rounded-lg',
-          newTaskButton.className
+          buttonClassName
         )}
         onClick={showNewTaskInput}
       >

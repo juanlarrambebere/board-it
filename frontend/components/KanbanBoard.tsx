@@ -2,9 +2,8 @@ import { FC } from 'react';
 import { useRecoilValue } from 'recoil';
 import taskIdsAtom from 'recoil/atoms/taskIdsAtom';
 import { Status } from 'types/status';
+import { STATUS_LIST } from 'utils/constants';
 import StatusTaskList from './StatusTaskList';
-
-const STATUS_LIST = ['TODO', 'DOING', 'IN_REVIEW', 'DONE'];
 
 const KanbanBoard: FC = () => {
   const taskIds = useRecoilValue(taskIdsAtom);
