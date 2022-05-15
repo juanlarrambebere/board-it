@@ -1,7 +1,7 @@
 import { selectorFamily } from 'recoil';
 import taskAtomFamily from 'recoil/atoms/taskAtomFamily';
 import { Status } from 'types/status';
-import taskIdsAtom from '../atoms/taskIdsAtom';
+import filteredTaskIdsSelectorFamily from './filteredTaskIdsSelector';
 
 const taskIdsWithStatusSelectorFamily = selectorFamily<
   number[] | undefined,
@@ -11,7 +11,7 @@ const taskIdsWithStatusSelectorFamily = selectorFamily<
   get:
     (status: Status) =>
     ({ get }) => {
-      const taskIds = get(taskIdsAtom);
+      const taskIds = get(filteredTaskIdsSelectorFamily);
       if (!taskIds) return undefined;
 
       return taskIds.filter(
