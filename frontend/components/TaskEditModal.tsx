@@ -43,8 +43,12 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
 
   const handleClose = useCallback(() => {
     onClose();
-    resetForm();
-  }, [onClose, resetForm]);
+    resetForm({
+      name: task?.name,
+      description: task?.description,
+      status: task?.status,
+    });
+  }, [onClose, resetForm, task?.description, task?.name, task?.status]);
 
   const handleStatusChange = useCallback(
     (status) => {
@@ -70,7 +74,10 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
 
         <div className="flex items-center p-4 space-x-4 rounded-lg bg-neutral-700/50">
           <span>Status</span>
-          <StatusSelect status={task.status} onChange={handleStatusChange} />
+          <StatusSelect
+            status={formData.status!}
+            onChange={handleStatusChange}
+          />
         </div>
 
         <div className="flex flex-col p-4 space-y-4 rounded-lg bg-neutral-700/50">

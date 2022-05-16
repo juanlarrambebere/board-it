@@ -10,7 +10,7 @@ type ReturnType<T> = {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   setFormValue: (name: string, value: string) => void;
-  resetForm: () => void;
+  resetForm: (data?: T) => void;
 };
 
 const useForm = function <T>({ initialState }: Props<T>): ReturnType<T> {
@@ -28,7 +28,7 @@ const useForm = function <T>({ initialState }: Props<T>): ReturnType<T> {
   );
 
   const resetForm = useCallback(
-    () => setFormData(initialState),
+    (data?: T) => setFormData(data ?? initialState),
     [initialState]
   );
 
