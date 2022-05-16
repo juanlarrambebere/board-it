@@ -5,6 +5,7 @@ import { FC, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import taskAtomFamily from 'recoil/atoms/taskAtomFamily';
+import { Status } from 'types/status';
 import Modal from './Modal';
 import StatusSelect from './StatusSelect';
 import TaskContextMenu from './TaskContextMenu';
@@ -51,7 +52,7 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
   }, [onClose, resetForm, task?.description, task?.name, task?.status]);
 
   const handleStatusChange = useCallback(
-    (status) => {
+    (status: Status) => {
       setFormValue('status', status);
     },
     [setFormValue]
@@ -98,7 +99,7 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
             {isFormDirty && (
               <>
                 <button
-                  onClick={resetForm}
+                  onClick={() => resetForm()}
                   className="p-2 rounded-lg hover:bg-neutral-300/10"
                 >
                   Cancel

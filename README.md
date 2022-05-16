@@ -61,70 +61,12 @@ git checkout master && git pull origin master
 
 ## Backend
 
-<b>Pre-requisites:</b>
-
-1. Docker. To run hasura you'll need docker up & running in your compouter.
-2. Port 8080 available. Hasura runs in the port 8080, so make sure the port is available.
-
-<b>Start:</b>
-
-1. Navigate to the backends folder
-
-```
-cd backend
-```
-
-2. Set up the required environment variables for Hasura. To do so, you'll need to create an `.env` file and paste the content of `.env.sample` into it.
-
-```
-touch .env && cp .env.sample .env
-```
-
-3. Run hasura vía docker-compose.
-
-```
-docker-compose up -d
-```
-
-Hasura's engine should start and you should be able to entre it's console at http://localhost:8080
-
-Note: The first time you access, Hasura will ask for the admin secret. You'll find it in the `.env.sample` under the `HASURA_ADMIN_SECRET` variable
+See [Backend readme](./backend/README.md)
 
 # Frontend
 
-<b>Pre-requisites:</b>
-
-1. npm & node installed. I have npm version `8.5.5` and node version `v16.14.0`
-2. The app starts in the port 3000, so make sure it's available.
-
-<b>Start:</b>
-
-1. Navigate to the frontend
-
-```
-cd frontend
-```
-
-2. Install its dependencies
-
-```
-npm i
-```
-
-3. Run the project
-
-```
-npm run dev
-```
-
-4. (Alternative to 3.) If you want to create a productive build and run it, just run
-
-```
-npm build && npm start
-```
-
-After a few seconds, you should be able to access the webapp at http://localhost:3000/
+See [Frontend readme](./frontend/README.md)
 
 # Note:
 
-Since the app uses web sockets, you should be able to opeen the same app in two different browser tabs, do things like creating tasks, editing/deleting them and see the changes in both tabs!
+Since the app uses web sockets, you should be able to open the same app in two different browser tabs, do things like creating tasks, editing/deleting them and see the changes in both tabs!

@@ -38,9 +38,12 @@ type Props = {
 };
 
 const StatusSelect: FC<Props> = ({ status, onChange }: Props) => {
-  const currentStatus = OPTIONS.find((s) => s.id === status);
+  const currentStatus = OPTIONS.find((s: StatusOption) => s.id === status);
 
-  const handleChange = useCallback((opt) => onChange(opt.id), [onChange]);
+  const handleChange = useCallback(
+    (opt: StatusOption) => onChange(opt.id),
+    [onChange]
+  );
 
   return (
     <Select

@@ -7,10 +7,12 @@
 
 <b>Start:</b>
 
-1. Navigate to the frontend
+Assuming you are in the `/frontend` folder
+
+1. Set up the required environment variables. To do so, you'll need to create an `.env` file and paste the content of `.env.sample` into it.
 
 ```
-cd frontend
+touch .env && cp .env.sample .env
 ```
 
 2. Install its dependencies
@@ -28,7 +30,7 @@ npm run dev
 4. (Alternative to 3.) If you want to create a productive build and run it, just run
 
 ```
-npm build && npm start
+npm run build && npm start
 ```
 
 After a few seconds, you should be able to access the webapp at http://localhost:3000/

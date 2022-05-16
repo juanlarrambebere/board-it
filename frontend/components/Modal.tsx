@@ -1,5 +1,8 @@
 import { FC, ReactElement } from 'react';
-import ReactModal from 'react-modal';
+// import ReactModal from 'react-modal';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ReactModal = require('react-modal');
 
 type Props = {
   isOpen: boolean;
