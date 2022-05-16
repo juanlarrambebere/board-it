@@ -1,29 +1,30 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 
-type Props = {
-  initialState: {
-    [key: string]: string;
-  };
+type Props<T> = {
+  initialState: T;
 };
 
-type ReturnType = {
-  formData: {
-    [key: string]: string; // FIXME this type should be exactly the same as initialState. Currently it's not.
-  };
+type ReturnType<T> = {
+  formData: T;
   handleChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  setFormValue: (name: string, value: string) => void;
   resetForm: () => void;
 };
 
-const useForm = ({ initialState }: Props): ReturnType => {
+const useForm = function <T>({ initialState }: Props<T>): ReturnType<T> {
   const [formData, setFormData] = useState(initialState);
+
+  const setFormValue = useCallback((name: string, value: string) => {
+    setFormData((data) => ({ ...data, [name]: value }));
+  }, []);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setFormData((data) => ({ ...data, [e.target.name]: e.target.value }));
+      setFormValue(e.target.name, e.target.value);
     },
-    []
+    [setFormValue]
   );
 
   const resetForm = useCallback(
@@ -31,7 +32,7 @@ const useForm = ({ initialState }: Props): ReturnType => {
     [initialState]
   );
 
-  return { formData, handleChange, resetForm };
+  return { formData, handleChange, setFormValue, resetForm };
 };
 
 export default useForm;
