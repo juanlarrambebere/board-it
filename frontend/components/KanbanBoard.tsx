@@ -8,10 +8,10 @@ import TasksFilter from './TasksFilter';
 
 const KanbanBoard: FC = () => {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col max-w-6xl gap-8 p-8">
       <TasksFilter />
       <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-wrap justify-start flex-1 gap-4 lg:justify-around">
+        <div className="flex flex-wrap justify-center gap-4">
           {STATUS_LIST.map((status) => (
             <StatusTaskList key={status} status={status as Status} />
           ))}

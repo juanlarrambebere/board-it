@@ -7,7 +7,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="h-full min-h-screen text-neutral-300 bg-neutral-800">
+      <div className="flex justify-center h-full min-h-screen text-neutral-300 bg-neutral-800">
         <KanbanBoard />
       </div>
     </>

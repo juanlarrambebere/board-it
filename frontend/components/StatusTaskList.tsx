@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import taskIdsWithStatusSelectorFamily from 'recoil/selectors/taskIdsWithStatusSelectorFamily';
 import { Status } from 'types/status';
 import { STATUS_CONFIG } from 'utils/constants';
+import EmptyTaskListPlaceholder from './EmptyTaskListPlaceholder';
 import NewTaskInput from './NewTaskInput';
 import StatusTaskListHeader from './StatusTaskListHeader';
 import TaskCard, { TASK_CARD } from './TaskCard';
@@ -105,9 +106,13 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
         className={classNames('rounded-md p-1', titleClassName)}
         tasksCount={taskIdsWithStatus?.length ?? 0}
       />
-      {taskIdsWithStatus?.map((taskId) => (
-        <TaskCard key={taskId} taskId={taskId} />
-      ))}
+      {taskIdsWithStatus ? (
+        taskIdsWithStatus.map((taskId) => (
+          <TaskCard key={taskId} taskId={taskId} />
+        ))
+      ) : (
+        <EmptyTaskListPlaceholder />
+      )}
 
       {isNewTaskInputVisible && (
         <NewTaskInput
