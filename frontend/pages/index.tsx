@@ -1,9 +1,9 @@
 import KanbanBoard from 'components/KanbanBoard';
-import useSubscribeToNewTasks from 'hooks/useSubscribeToNewTasks';
+import useSubscribeToTasks from 'hooks/useSubscribeToTasks';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
-  useSubscribeToNewTasks();
+  useSubscribeToTasks();
 
   return (
     <>
