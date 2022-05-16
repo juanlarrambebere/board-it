@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import useUpdateTask from 'hooks/useUpdateTask';
 import { FC, useCallback, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import taskIdsWithStatusSelectorFamily from 'recoil/selectors/taskIdsWithStatusSelectorFamily';
 import { Status } from 'types/status';
@@ -59,7 +60,7 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
   );
 
   const handleTaskCreationError = useCallback(() => {
-    // TODO give some feedback to the user.
+    toast.error("Oops! We couldn't create the task. Please, try again");
   }, []);
 
   const { name, color } = STATUS_CONFIG[status];
@@ -71,9 +72,9 @@ const StatusTaskList: FC<Props> = ({ status }: Props) => {
   const handleDrop = useCallback(
     async ({ taskId }: { taskId: number }) => {
       try {
-        updateTask(taskId, { status });
+        await updateTask(taskId, { status });
       } catch (_e) {
-        // TODO give some feedback to the user.
+        toast.error("Oops! We couldn't delete the task. Please, try again");
       }
     },
     [status, updateTask]

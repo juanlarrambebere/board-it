@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import useForm from 'hooks/useForm';
 import useUpdateTask from 'hooks/useUpdateTask';
 import { FC, useCallback } from 'react';
+import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import taskAtomFamily from 'recoil/atoms/taskAtomFamily';
 import Modal from './Modal';
@@ -36,7 +37,7 @@ const TaskEditModal: FC<Props> = ({ isOpen, onClose, taskId }: Props) => {
     try {
       await updateTask(taskId, formData);
     } catch (e) {
-      // TODO give feedback to the user.
+      toast.error("Oops! We couldn't update the task. Please, try again");
     }
   }, [formData, taskId, updateTask]);
 

@@ -4,6 +4,7 @@ import TrashIcon from 'assets/icons/trash.svg';
 import classNames from 'classnames';
 import useDeleteTask from 'hooks/useDeleteTask';
 import { FC, useCallback } from 'react';
+import { toast } from 'react-toastify';
 
 type Props = {
   taskId: number;
@@ -15,8 +16,8 @@ const TaskContextMenu: FC<Props> = ({ taskId }: Props) => {
   const handleDeleteClick = useCallback(async () => {
     try {
       await deleteTask(taskId);
-    } catch (e) {
-      // TODO give feedback to the user.
+    } catch (_e) {
+      toast.error("Oops! We couldn't delete the task. Please, try again");
     }
   }, [deleteTask, taskId]);
 
