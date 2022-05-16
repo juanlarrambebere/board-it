@@ -18,31 +18,36 @@ const useCreateTask = () => {
   const createTask = useRecoilCallback(
     ({ set }) =>
       async (name: string, status: Status) => {
-        const { data, errors } = await mutation({
-          variables: {
-            name,
-            status,
-          },
-        });
+        try {
+          const { data, errors } = await mutation({
+            variables: {
+              name,
+              status,
+            },
+          });
 
-        if (!data || errors) {
+          if (!data || errors) {
+            // TODO log the error somewhere (ie: Sentry)
+            throw 'Error creating task';
+          }
+
+          // Since the mutation worked, its safe to update the state without waiting for the subscription.
+          const newTask = data.task;
+          set(taskIdsAtom, (taskIds) =>
+            taskIds ? [...taskIds, newTask.id] : [newTask.id]
+          );
+          set(taskAtomFamily(newTask.id), {
+            id: newTask.id,
+            name: newTask.name,
+            description: newTask.description,
+            status: newTask.status as Status,
+            updatedAt: parseJSON(newTask.updated_at),
+            createdAt: parseJSON(newTask.created_at),
+          });
+        } catch (e) {
           // TODO log the error somewhere (ie: Sentry)
-          throw 'Error creating task';
+          throw 'Something went wrong while connecting to the server.';
         }
-
-        // Since the mutation worked, its safe to update the state without waiting for the subscription.
-        const newTask = data.task;
-        set(taskIdsAtom, (taskIds) =>
-          taskIds ? [...taskIds, newTask.id] : [newTask.id]
-        );
-        set(taskAtomFamily(newTask.id), {
-          id: newTask.id,
-          name: newTask.name,
-          description: newTask.description,
-          status: newTask.status as Status,
-          updatedAt: parseJSON(newTask.updated_at),
-          createdAt: parseJSON(newTask.created_at),
-        });
       },
     [mutation]
   );

@@ -9,21 +9,26 @@ const useCreateTask = () => {
   const deleteTask = useRecoilCallback(
     ({ set }) =>
       async (taskId: number) => {
-        const { data, errors } = await mutation({
-          variables: {
-            taskId,
-          },
-        });
+        try {
+          const { data, errors } = await mutation({
+            variables: {
+              taskId,
+            },
+          });
 
-        if (!data || errors) {
+          if (!data || errors) {
+            // TODO log the error somewhere (ie: Sentry)
+            throw 'Error deleting task';
+          }
+
+          // Since the mutation worked, its safe to update the state without waiting for the subscription.
+          set(taskIdsAtom, (taskIds) =>
+            taskIds ? taskIds.filter((id) => id !== taskId) : taskIds
+          );
+        } catch (e) {
           // TODO log the error somewhere (ie: Sentry)
-          throw 'Error deleting task';
+          throw 'Something went wrong while connecting to the server.';
         }
-
-        // Since the mutation worked, its safe to update the state without waiting for the subscription.
-        set(taskIdsAtom, (taskIds) =>
-          taskIds ? taskIds.filter((id) => id !== taskId) : taskIds
-        );
       },
     [mutation]
   );

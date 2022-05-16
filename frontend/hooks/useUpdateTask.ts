@@ -21,31 +21,36 @@ const useUpdateTask = () => {
         taskId: number,
         changes: Partial<Pick<Raw.Task, 'name' | 'description' | 'status'>>
       ) => {
-        const { data, errors } = await mutation({
-          variables: {
-            taskId,
-            changes,
-          },
-        });
+        try {
+          const { data, errors } = await mutation({
+            variables: {
+              taskId,
+              changes,
+            },
+          });
 
-        if (!data || errors) {
+          if (!data || errors) {
+            // TODO log the error somewhere (ie: Sentry)
+            throw 'Error updating task';
+          }
+
+          // Since the mutation worked, its safe to update the state without waiting for the subscription.
+          const updatedTask = data.task!;
+          set(taskAtomFamily(taskId), (task) => ({
+            ...task,
+            ...{
+              id: updatedTask.id,
+              name: updatedTask.name,
+              description: updatedTask.description,
+              status: updatedTask.status as Status,
+              updatedAt: parseJSON(updatedTask.updated_at),
+              createdAt: parseJSON(updatedTask.created_at),
+            },
+          }));
+        } catch (e) {
           // TODO log the error somewhere (ie: Sentry)
-          throw 'Error updating task';
+          throw 'Something went wrong while connecting to the server.';
         }
-
-        // Since the mutation worked, its safe to update the state without waiting for the subscription.
-        const updatedTask = data.task!;
-        set(taskAtomFamily(taskId), (task) => ({
-          ...task,
-          ...{
-            id: updatedTask.id,
-            name: updatedTask.name,
-            description: updatedTask.description,
-            status: updatedTask.status as Status,
-            updatedAt: parseJSON(updatedTask.updated_at),
-            createdAt: parseJSON(updatedTask.created_at),
-          },
-        }));
       },
     [mutation]
   );
